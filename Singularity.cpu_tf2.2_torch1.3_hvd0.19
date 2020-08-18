@@ -6,7 +6,7 @@ From: centos
    yum update -y
    yum install -y gcc gcc-c++ wget bzip2 which make libfabric git
 
-   #####
+   ###
    #  miniconda install
    ############
    
