@@ -48,7 +48,7 @@ From: centos
    conda install -y tensorflow==1.14 -c intel
 
    echo install keras
-   conda install -y keras==1.1 pandas h5py matplotlib scikit-learn scikit-image
+   conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
    pip install tensorboardX
    
    echo install pytorch
