@@ -1,1 +1,1 @@
-# kay_singularity_images
+# Singularity images for ML/DL stack on Kay
