@@ -49,9 +49,37 @@ From: nvidia/cuda:9.0-devel-ubuntu16.04
         libnccl2=${NCCL_VERSION} \
         libnccl-dev=${NCCL_VERSION} \
         libjpeg-dev \
-        libpng-dev \
-        python${PYTHON_VERSION} \
-        python${PYTHON_VERSION}-dev
+        libpng-dev 
+        
+        
+       
+#####
+#  miniconda install
+##########
+   
+# change this if you want different versions
+   CONDAVER=3
+   VERSION=4.6.14
+   BASE_DIR=/miniconda$CONDAVER
+   PREFIX_PATH=$BASE_DIR/$VERSION
+   DOWNLOAD_PATH=$BASE_DIR/DOWNLOADS
+
+   # make install area
+   mkdir -p $PREFIX_PATH
+   mkdir -p $DOWNLOAD_PATH
+
+   MINICONDA_INSTALL_FILE=Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh
+
+   echo Downloading miniconda installer
+   wget https://repo.continuum.io/miniconda/$MINICONDA_INSTALL_FILE -P $DOWNLOAD_PATH
+      
+   chmod +x $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh
+
+   echo Installing Miniconda
+   $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh -b -p $PREFIX_PATH -u
+
+   # add conda to environment
+    export PATH=$PREFIX_PATH/bin:$PATH
 
     ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
@@ -65,6 +93,7 @@ From: nvidia/cuda:9.0-devel-ubuntu16.04
 # Install the IB verbs
     apt install -y --no-install-recommends libibverbs*
     apt install -y --no-install-recommends ibverbs-utils librdmacm* infiniband-diags libmlx4* libmlx5* libnuma*
+    apt install -y --no-install-recommends libpsm2  infinipath-psm tcl
 
 # Install Open MPI
     mkdir -p /tmp/openmpi && \
