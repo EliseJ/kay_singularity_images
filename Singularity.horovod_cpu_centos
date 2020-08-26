@@ -58,7 +58,7 @@ From: centos
    pip install tensorboardX
    
    echo install pytorch
-   conda install -y pytorch-cpu==$PYTORCH_VERSION torchvision-cpu==$TORCHVISION_VERSION -c pytorch
+   conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
    
    pip install mxnet==${MXNET_VERSION}
    
