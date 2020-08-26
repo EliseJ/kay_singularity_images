@@ -56,15 +56,14 @@ From: centos
    echo install keras
    conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
    pip install tensorboardX
-   
-   echo install pytorch
-   conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
-   
+ 
    echo which gcc: $(/bin/which gcc)
    echo which g++: $(/bin/which g++)
    echo gcc version
    gcc --version
 
+   echo install pytorch
+   conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
    ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
    curl -O https://bootstrap.pypa.io/get-pip.py && \
@@ -88,8 +87,7 @@ From: centos
    rm -rf /tmp/openmpi
 
    # Install Horovod
-   HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 \
-   pip install --no-cache-dir horovod
+   HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 pip install --no-cache-dir horovod
 
 
    # Install OpenSSH for MPI to communicate between containers
