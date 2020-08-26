@@ -41,10 +41,10 @@ curl -O https://bootstrap.pypa.io/get-pip.py && \
 # Install TensorFlow, Keras, PyTorch and MXNet
 pip install future typing
 pip install numpy \
-tensorflow==${TENSORFLOW_VERSION} \
+tensorflow-cpu==${TENSORFLOW_VERSION} \
 keras \
 h5py
-pip install torch==${PYTORCH_VERSION} torchvision==${TORCHVISION_VERSION}
+pip install torch-cpu==${PYTORCH_VERSION} torchvision-cpu==${TORCHVISION_VERSION}
 pip install mxnet==${MXNET_VERSION}
 
 # Install the IB verbs
