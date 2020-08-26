@@ -5,7 +5,7 @@ From: centos
 %post
     # install development tools
    yum update -y
-   yum install -y gcc gcc-c++ wget bzip2 which cmake libfabric git build-essential curl vim ca-certificates
+   yum install -y gcc gcc-c++ wget bzip2 which cmake libfabric git curl vim 
    yum install -y libjpeg-dev libpng-dev librdmacm1 libibverbs1  ibverbs-providers
 
    TENSORFLOW_VERSION=2.1.0
