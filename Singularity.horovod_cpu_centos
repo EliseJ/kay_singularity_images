@@ -14,7 +14,7 @@ From: centos
    MXNET_VERSION=1.6.0
    #####
    #  miniconda install
-   ##########
+   #####
    
    # change this if you want different versions
    CONDAVER=3
