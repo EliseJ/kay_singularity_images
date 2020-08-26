@@ -60,8 +60,6 @@ From: centos
    echo install pytorch
    conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
    
-   pip install mxnet==${MXNET_VERSION}
-   
    echo which gcc: $(/bin/which gcc)
    echo which g++: $(/bin/which g++)
    echo gcc version
@@ -72,8 +70,6 @@ From: centos
    curl -O https://bootstrap.pypa.io/get-pip.py && \
    python get-pip.py && \
    rm get-pip.py
-
-
 
    # Install the IB verbs
    yum install -y libibverbs*
