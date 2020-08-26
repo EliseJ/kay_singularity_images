@@ -34,9 +34,6 @@ ibverbs-providers
 
 ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
-curl -O https://bootstrap.pypa.io/get-pip.py && \
-python get-pip.py && \
-rm get-pip.py
 
 # Install TensorFlow, Keras, PyTorch and MXNet
 pip install future typing
