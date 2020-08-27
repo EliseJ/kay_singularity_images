@@ -36,7 +36,7 @@ From: centos
    echo Installing Miniconda
    $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh -b -p $PREFIX_PATH -u
 
-   # add conda to environment
+   # add conda to envir
    export PATH=$PREFIX_PATH/bin:$PATH
 
 
