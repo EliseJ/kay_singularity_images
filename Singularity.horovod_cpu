@@ -12,7 +12,6 @@ export MXNET_VERSION=1.6.0
 python=3.6
 export PYTHON_VERSION=${python}
 
-
 apt-get update && apt-get install -y --allow-downgrades --allow-change-held-packages --no-install-recommends \
 build-essential \
 cmake \
