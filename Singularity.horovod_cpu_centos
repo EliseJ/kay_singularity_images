@@ -62,7 +62,6 @@ From: centos
    gcc --version
 
    yum install -y libibverbs*
-   yum install -y ibverbs-utils librdmacm* infiniband-diags libmlx4* libmlx5* libnuma*
   
    curl -O https://bootstrap.pypa.io/get-pip.py && \
    python get-pip.py && \
