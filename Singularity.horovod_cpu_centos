@@ -61,17 +61,12 @@ From: centos
    echo gcc version
    gcc --version
 
-   echo install pytorch
-   conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
-   ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-
+   yum install -y libibverbs*
+   yum install -y ibverbs-utils librdmacm* infiniband-diags libmlx4* libmlx5* libnuma*
+  
    curl -O https://bootstrap.pypa.io/get-pip.py && \
    python get-pip.py && \
    rm get-pip.py
-
-   # Install the IB verbs
-   yum install -y libibverbs*
-   yum install -y ibverbs-utils librdmacm* infiniband-diags libmlx4* libmlx5* libnuma*
 
    # Install Open MPI
    mkdir /tmp/openmpi && \
@@ -84,6 +79,8 @@ From: centos
    make install && \
    ldconfig && \
    rm -rf /tmp/openmpi
+   
+   conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
 
    # Install Horovod
    HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 pip install --no-cache-dir horovod
