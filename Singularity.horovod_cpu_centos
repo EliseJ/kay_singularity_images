@@ -5,8 +5,6 @@ From: centos
     # install development tools
    yum update -y
    yum install -y gcc gcc-c++ wget bzip2 which cmake libfabric git curl vim 
-   
-
    TENSORFLOW_VERSION=2.1.0
    PYTORCH_VERSION=1.5.1
    TORCHVISION_VERSION=0.6.1
@@ -38,8 +36,6 @@ From: centos
 
    # add conda to envir
    export PATH=$PREFIX_PATH/bin:$PATH
-
-
    echo moving into $PREFIX_PATH
    cd $PREFIX_PATH
 
@@ -79,12 +75,10 @@ From: centos
    ldconfig && \
    rm -rf /tmp/openmpi
    
-   conda install pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
-
-   # Install Horovod
-   HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 pip install --no-cache-dir horovod
-
-
+   conda install -y pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
+   
+   HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 HOROVOD_WITH_TENSORFLOW=1 pip install --no-cache-dir horovod==0.19
+   
    # Install OpenSSH for MPI to communicate between containers
    yum install -y openssh-client openssh-server && mkdir -p /var/run/sshd
 
