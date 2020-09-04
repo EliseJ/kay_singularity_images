@@ -73,11 +73,13 @@ From: centos
    make -j 4 all && \
    make install && \
    ldconfig && \
-   rm -rf /tmp/openmpi
+   
+   export PATH=$PATH:/tmp/openmpi-4.0.0/bin
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/lib
    
    conda install -y pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
    
-   HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 HOROVOD_WITH_TENSORFLOW=1 pip install --no-cache-dir horovod==0.19
+   HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 HOROVOD_WITH_TENSORFLOW=1 CC=/tmp/openmpi-4.0.0/bin/mpicc CXX=/tmp/openmpi-4.0.0/bin/mpicxx pip install --no-cache-dir horovod==0.19
    
    # Install OpenSSH for MPI to communicate between containers
    yum install -y openssh-client openssh-server && mkdir -p /var/run/sshd
