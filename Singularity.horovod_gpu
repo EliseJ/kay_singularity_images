@@ -1,0 +1,117 @@
+BootStrap: docker
+From: nvidia/cuda:10.0-cudnn7-runtime-centos7
+# -----------------------------------------------------------------------------------
+# This is a port of the Dockerfile maintained at https://github.com/uber/horovod
+
+
+%environment
+# -----------------------------------------------------------------------------------
+    # for system
+    export CUDA_DEVICE_ORDER=PCI_BUS_ID
+
+    # Add cupti to the path for profiling:
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64
+
+    source scl_source enable devtoolset-4
+    
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    export LC_ALL=C
+    export HOROVOD_GPU_ALLREDUCE=NCCL
+    export HOROVOD_GPU_ALLGATHER=MPI
+    export HOROVOD_GPU_BROADCAST=MPI
+    export HOROVOD_NCCL_HOME=/usr/local/cuda/nccl
+    export HOROVOD_NCCL_INCLUDE=/usr/local/cuda/nccl/include
+    export HOROVOD_NCCL_LIB=/usr/local/cuda/nccl/lib 
+    
+    export PYTHON_VERSION=3.6
+    export TENSORFLOW_VERSION=2.2.0
+    export PYTORCH_VERSION=1.5.1
+ 
+    export PATH=$PATH:/tmp/openmpi-4.0.0/build/bin:$PATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/build/lib:$LD_LIBRARY_PATH
+    export LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:$LIBRARY_PATH
+    export CPATH=/tmp/openmpi-4.0.0/build/include:$CPATH
+    export C_INCLUDE_PATH=/tmp/openmpi-4.0.0/build/include:$C_INCLUDE_PATH
+
+%post
+# -----------------------------------------------------------------------------------
+# 
+    # yum basics
+    yum update -y
+    yum groupinstall -y "Development Tools"
+    yum install -y epel-release
+    yum install -y centos-release-scl
+    yum install -y devtoolset-4
+    yum install -y wget emacs vim
+    yum install -y emacs vim openssh-clients zip
+    yum install -y python3-devel.x86_64 python-pip python-setuptools
+    yum install -y hdf5
+
+    pip --no-cache-dir --disable-pip-version-check install --upgrade setuptools
+    pip --no-cache-dir --disable-pip-version-check install future
+    pip --no-cache-dir --disable-pip-version-check install numpy wheel zmq six pygments pyyaml cython gputil psutil humanize h5py tqdm scipy seaborn tables
+    pip --no-cache-dir --disable-pip-version-check install  pandas scikit-image scikit-learn Pillow opencv-python
+    pip --no-cache-dir --disable-pip-version-check install jupyter notebook
+    
+    TENSORFLOW_VERSION=2.2.0
+    PYTORCH_VERSION=1.5.1
+    TORCHVISION_VERSION=0.6.1
+    MXNET_VERSION=1.6.0
+    PYTHON_VERSION=3.6
+    
+  
+
+
+# Install TensorFlow, Keras and PyTorch
+    pip --no-cache-dir --disable-pip-version-check install tensorflow-gpu==2.2.0 keras h5py torch==1.5.1 torchvision
+
+    yum install -y libibverbs*
+
+# Install Open MPI
+   mkdir /tmp/openmpi && \
+   cd /tmp/openmpi && \
+   wget https://www.open-mpi.org/software/ompi/v4.0/downloads/openmpi-4.0.0.tar.gz && \
+   tar zxf openmpi-4.0.0.tar.gz && \
+   cd openmpi-4.0.0 && \
+   ./configure --enable-orterun-prefix-by-default --prefix=/tmp/openmpi/build --with-cuda=/usr/local/cuda/lib64 && \
+   make -j 4 all && \
+   make install && \
+   ldconfig && \
+   cd -
+   
+   
+   export PATH=$PATH:/tmp/openmpi-4.0.0/build/bin:$PATH
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/build/lib:$LD_LIBRARY_PATH
+   export LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:$LIBRARY_PATH
+   export CPATH=/tmp/openmpi-4.0.0/build/include:$CPATH
+   export C_INCLUDE_PATH=/tmp/openmpi-4.0.0/build/include:$C_INCLUDE_PATH
+   
+   # nccl2
+   git clone https://github.com/NVIDIA/nccl.git
+   cd nccl;
+   make -j src.build
+   make pkg.redhat.build
+   rpm -i build/pkg/rpm/x86_64/libnccl* 
+   cd -
+   
+   pip --no-cache-dir --disable-pip-version-check install mpi4py
+   
+   
+   ldconfig /usr/local/cuda/lib64/stubs
+   # install Horovod, add other HOROVOD_* environment variables as necessary
+   HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/nccl/build/ pip install --no-cache-dir horovod
+
+   # revert to standard libraries
+   ldconfig
+   
+
+   # Configure OpenMPI to run good defaults:
+   #   --bind-to none --map-by slot --mca btl_tcp_if_exclude lo,docker0
+   echo "hwloc_base_binding_policy = none" >> /usr/local/etc/openmpi-mca-params.conf && \
+   echo "rmaps_base_mapping_policy = slot" >> /usr/local/etc/openmpi-mca-params.conf 
+   #echo "btl_tcp_if_exclude = lo,docker0" >> /usr/local/etc/openmpi-mca-params.conf
+
+   #  Set default NCCL parameters
+   echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
+   echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf
+
