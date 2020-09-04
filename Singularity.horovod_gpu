@@ -54,7 +54,9 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
     MXNET_VERSION=1.6.0
     PYTHON_VERSION=3.6
     
-  
+   curl -O https://bootstrap.pypa.io/get-pip.py && \
+   python get-pip.py && \
+   rm get-pip.py
 
 
 # Install TensorFlow, Keras and PyTorch
