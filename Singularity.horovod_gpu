@@ -37,13 +37,10 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
 # -----------------------------------------------------------------------------------
 # 
     # yum basics
-    yum update -y
-    yum groupinstall -y "Development Tools"
-    yum install -y epel-release
-    yum install -y centos-release-scl
-    yum install -y devtoolset-4
-    yum install -y wget emacs vim
-    yum install -y emacs vim openssh-clients zip
+    
+    yum install -y gcc gcc-c++ bzip2 which cmake libfabric git curl 
+    yum install -y wget vim
+    yum install -y openssh-clients zip
     yum install -y python3-devel.x86_64 python-pip python-setuptools
     yum install -y hdf5
 
