@@ -69,13 +69,18 @@ From: centos
    wget https://www.open-mpi.org/software/ompi/v4.0/downloads/openmpi-4.0.0.tar.gz && \
    tar zxf openmpi-4.0.0.tar.gz && \
    cd openmpi-4.0.0 && \
-   ./configure --enable-orterun-prefix-by-default && \
+   ./configure --enable-orterun-prefix-by-default --prefix=/tmp/openmpi/build && \
    make -j 4 all && \
    make install && \
    ldconfig && \
    
-   export PATH=$PATH:/tmp/openmpi-4.0.0/bin
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/lib
+   
+   export PATH=$PATH:/tmp/openmpi-4.0.0/build/bin:$PATH
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/build/lib:$LD_LIBRARY_PATH
+   export LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:$LIBRARY_PATH
+   export CPATH=/tmp/openmpi-4.0.0/build/include:$CPATH
+   export C_INCLUDE_PATH=/tmp/openmpi-4.0.0/build/include:$C_INCLUDE_PATH
+   
    
    conda install -y pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
    
