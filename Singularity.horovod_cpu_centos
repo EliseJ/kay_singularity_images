@@ -75,11 +75,13 @@ From: centos
    ldconfig && \
    
    
-   export PATH=$PATH:/tmp/openmpi-4.0.0/build/bin:$PATH
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/build/lib:$LD_LIBRARY_PATH
-   export LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:$LIBRARY_PATH
-   export CPATH=/tmp/openmpi-4.0.0/build/include:$CPATH
-   export C_INCLUDE_PATH=/tmp/openmpi-4.0.0/build/include:$C_INCLUDE_PATH
+   export PATH=/tmp/openmpi-4.0.0/build/bin:${PATH}
+   export LD_LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:${LD_LIBRARY_PATH}
+   export LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:${LIBRARY_PATH}
+   export CPATH=/tmp/openmpi-4.0.0/build/include:${CPATH}
+   export C_INCLUDE_PATH=/tmp/openmpi-4.0.0/build/include:${C_INCLUDE_PATH}
+   
+   echo which mpicc
    
    
    conda install -y pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
@@ -96,8 +98,8 @@ From: centos
 
 %environment
    export PATH=/miniconda3/4.6.14/bin:$PATH
-   export PATH=$PATH:/tmp/openmpi-4.0.0/build/bin:$PATH
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openmpi-4.0.0/build/lib:$LD_LIBRARY_PATH
+   export PATH=/tmp/openmpi-4.0.0/build/bin:$PATH
+   export LD_LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:$LD_LIBRARY_PATH
    export LIBRARY_PATH=/tmp/openmpi-4.0.0/build/lib:$LIBRARY_PATH
    export CPATH=/tmp/openmpi-4.0.0/build/include:$CPATH
    export C_INCLUDE_PATH=/tmp/openmpi-4.0.0/build/include:$C_INCLUDE_PATH
