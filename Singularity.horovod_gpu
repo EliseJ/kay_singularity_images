@@ -38,15 +38,11 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
 # 
     # yum basics
     
-    yum install -y gcc gcc-c++ bzip2 which cmake libfabric git curl 
+    yum install -y gcc gcc-c++ bzip2 which cmake make libfabric git curl 
     yum install -y wget vim
     yum install -y openssh-clients zip
     yum install -y python3-devel.x86_64 python-pip python-setuptools
-    pip --no-cache-dir --disable-pip-version-check install --upgrade setuptools
-    pip --no-cache-dir --disable-pip-version-check install future
-    pip --no-cache-dir --disable-pip-version-check install numpy wheel zmq six pygments pyyaml cython gputil psutil humanize h5py tqdm scipy seaborn tables
-    pip --no-cache-dir --disable-pip-version-check install  pandas scikit-image scikit-learn Pillow opencv-python
-    pip --no-cache-dir --disable-pip-version-check install jupyter notebook
+    
     
     TENSORFLOW_VERSION=2.2.0
     PYTORCH_VERSION=1.5.1
@@ -54,10 +50,15 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
     MXNET_VERSION=1.6.0
     PYTHON_VERSION=3.6
     
-   curl -O https://bootstrap.pypa.io/get-pip.py && \
-   python get-pip.py && \
-   rm get-pip.py
+    curl -O https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    rm get-pip.py
 
+    pip --no-cache-dir --disable-pip-version-check install --upgrade setuptools
+    pip --no-cache-dir --disable-pip-version-check install future
+    pip --no-cache-dir --disable-pip-version-check install numpy wheel zmq six pygments pyyaml cython gputil psutil humanize h5py tqdm scipy seaborn tables
+    pip --no-cache-dir --disable-pip-version-check install  pandas scikit-image scikit-learn Pillow opencv-python
+    pip --no-cache-dir --disable-pip-version-check install jupyter notebook
 
 # Install TensorFlow, Keras and PyTorch
     pip --no-cache-dir --disable-pip-version-check install tensorflow-gpu==2.2.0 keras h5py torch==1.5.1 torchvision
