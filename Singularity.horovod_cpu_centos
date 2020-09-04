@@ -4,7 +4,7 @@ From: centos
 %post
     # install development tools
    yum update -y
-   yum install -y gcc gcc-c++ wget bzip2 which cmake libfabric git curl vim 
+   yum install -y gcc gcc-c++ wget bzip2 which cmake make libfabric git curl vim 
    TENSORFLOW_VERSION=2.1.0
    PYTORCH_VERSION=1.5.1
    TORCHVISION_VERSION=0.6.1
@@ -70,9 +70,8 @@ From: centos
    tar zxf openmpi-4.0.0.tar.gz && \
    cd openmpi-4.0.0 && \
    ./configure --enable-orterun-prefix-by-default --prefix=/tmp/openmpi/build && \
-   make -j 4 all && \
-   make install && \
-   ldconfig && \
+   make all install && \
+   ldconfig
    
    
    export PATH=/tmp/openmpi-4.0.0/build/bin:${PATH}
