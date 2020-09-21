@@ -4,11 +4,13 @@ From: nvidia/cuda:9.0-devel
 # OpenMPI version 3.0.0
 %post
     apt-get update -y
+    
     apt-get install -y --no-install-recommends \
         file \
         hwloc \
         openssh-client \
         wget
+    yum install -y libibverbs*
     rm -rf /var/lib/apt/lists/*
 %post
     mkdir -p /tmp && wget -q --no-check-certificate -P /tmp https://www.open-mpi.org/software/ompi/v3.0/downloads/openmpi-3.0.0.tar.bz2
