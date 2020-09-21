@@ -88,14 +88,19 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
 
     
     yum install -y libibverbs*
-
+    
+    export CPATH=/usr/local/cuda/include:$CPATH
+    export PATH=/usr/local/cuda/nccl/include:$PATH
+    export LD_LIBRARY_PATH=/usr/local/cuda/nccl/lib:$LD_LIBRARY_PATH
+    export C_INCLUDE_PATH=/usr/local/cuda/include:$C_INCLUDE_PATH
+    
 # Install Open MPI
     mkdir /tmp/openmpi && \
     cd /tmp/openmpi && \
     wget https://www.open-mpi.org/software/ompi/v4.0/downloads/openmpi-4.0.0.tar.gz && \
     tar zxf openmpi-4.0.0.tar.gz && \
     cd openmpi-4.0.0 && \
-    ./configure --enable-orterun-prefix-by-default --prefix=/tmp/openmpi/build --with-cuda=/usr/local/cuda/lib64 && \
+    ./configure --enable-orterun-prefix-by-default --prefix=/tmp/openmpi/build --with-cuda=/usr/local/cuda/ && \
     make -j 4 all && \
     make install && \
     ldconfig && \
