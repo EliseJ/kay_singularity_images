@@ -83,15 +83,10 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
     python get-pip.py && \
     rm get-pip.py
 
-    pip --no-cache-dir --disable-pip-version-check install --upgrade setuptools
-    pip --no-cache-dir --disable-pip-version-check install future
-    pip --no-cache-dir --disable-pip-version-check install numpy wheel zmq six pygments pyyaml cython gputil psutil humanize h5py tqdm scipy seaborn tables
-    pip --no-cache-dir --disable-pip-version-check install  pandas scikit-image scikit-learn Pillow opencv-python
-    pip --no-cache-dir --disable-pip-version-check install jupyter notebook
+    conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
+    pip install tensorboardX
 
-# Install TensorFlow, Keras and PyTorch
-    pip --no-cache-dir --disable-pip-version-check install tensorflow-gpu==2.2.0 keras h5py torch==1.5.1 torchvision
-
+    
     yum install -y libibverbs*
 
 # Install Open MPI
