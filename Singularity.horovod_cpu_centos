@@ -85,7 +85,7 @@ From: centos
    
    conda install -y pytorch==1.5.1 torchvision==0.6.1 cpuonly -c pytorch
    
-   HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=0 HOROVOD_WITH_TENSORFLOW=1  pip install --no-cache-dir horovod==0.19
+   HOROVOD_WITH_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 HOROVOD_WITH_TENSORFLOW=1  pip install --no-cache-dir horovod==0.19
    
    # Install OpenSSH for MPI to communicate between containers
    yum install -y openssh-client openssh-server && mkdir -p /var/run/sshd
