@@ -37,11 +37,11 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
 # -----------------------------------------------------------------------------------
 # 
     # yum basics
-    
+    yum update -y
     yum install -y gcc gcc-c++ bzip2 which cmake make libfabric git curl 
     yum install -y wget vim
     yum install -y openssh-clients zip
-    yum install -y python3-devel.x86_64 python-pip python-setuptools
+    
     
     
     TENSORFLOW_VERSION=2.2.0
@@ -49,6 +49,35 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
     TORCHVISION_VERSION=0.6.1
     MXNET_VERSION=1.6.0
     PYTHON_VERSION=3.6
+    
+    ###
+    #  miniconda install
+    ############
+   
+    # change this if you want different versions
+    CONDAVER=3
+    VERSION=4.6.14
+    BASE_DIR=/miniconda$CONDAVER
+    PREFIX_PATH=$BASE_DIR/$VERSION
+    DOWNLOAD_PATH=$BASE_DIR/DOWNLOADS
+
+    # make install area
+    mkdir -p $PREFIX_PATH
+    mkdir -p $DOWNLOAD_PATH
+
+    MINICONDA_INSTALL_FILE=Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh
+
+    echo Downloading miniconda installer
+    wget https://repo.continuum.io/miniconda/$MINICONDA_INSTALL_FILE -P $DOWNLOAD_PATH
+      
+    chmod +x $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh
+
+    echo Installing Miniconda
+    $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh -b -p $PREFIX_PATH -u
+
+    # add conda to environment
+    export PATH=$PREFIX_PATH/bin:$PATH
+   
     
     curl -O https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
