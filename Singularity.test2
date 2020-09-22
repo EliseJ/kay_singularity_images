@@ -9,7 +9,7 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
         file \
         hwloc \
         openssh-client \
-        wget
+        wget bzip2
     yum install -y libibverbs*
     rm -rf /var/lib/apt/lists/*
 %post
