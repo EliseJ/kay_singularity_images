@@ -7,7 +7,7 @@ From: nvidia/cuda:10.0-cudnn7-runtime-centos7
     
     yum install -y  \
         file \
-        hwloc \
+        hwloc  gcc\
         openssh-client \
         wget bzip2
     yum install -y libibverbs*
