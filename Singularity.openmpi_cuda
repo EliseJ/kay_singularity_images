@@ -8,7 +8,7 @@
 # 
 
 BootStrap: docker
-From: nvidia/cuda:9.0-devel-centos7
+From: nnvidia/cuda:10.0-cudnn7-runtime-centos7
 %post
     . /.singularity.d/env/10-docker*.sh
 
@@ -68,11 +68,80 @@ From: nvidia/cuda:9.0-devel-centos7
     make -j$(nproc)
     make -j$(nproc) install
     rm -rf /var/tmp/openmpi-3.0.0 /var/tmp/openmpi-3.0.0.tar.bz2
+    
+%post
+    cd /
+    CONDAVER=3
+    VERSION=4.6.14
+    BASE_DIR=/miniconda$CONDAVER
+    PREFIX_PATH=$BASE_DIR/$VERSION
+    DOWNLOAD_PATH=$BASE_DIR/DOWNLOADS
+
+    # make install area
+    mkdir -p $PREFIX_PATH
+    mkdir -p $DOWNLOAD_PATH
+
+    MINICONDA_INSTALL_FILE=Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh
+
+    echo Downloading miniconda installer
+    wget https://repo.continuum.io/miniconda/$MINICONDA_INSTALL_FILE -P $DOWNLOAD_PATH
+      
+    chmod +x $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh
+
+    echo Installing Miniconda
+    $DOWNLOAD_PATH/Miniconda$CONDAVER-$VERSION-Linux-x86_64.sh -b -p $PREFIX_PATH -u
+
+    # add conda to environment
+    export PATH=$PREFIX_PATH/bin:$PATH
+    curl -O https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    rm get-pip.py
+    conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
+    pip install tensorboardX
+    yum install -y libibverbs*
+    # nccl2
+    git clone https://github.com/NVIDIA/nccl.git
+    cd nccl;
+    make -j src.build
+    make pkg.redhat.build
+    rpm -i build/pkg/rpm/x86_64/libnccl* 
+    cd /
+   
+    pip --no-cache-dir --disable-pip-version-check install mpi4py
+    
 %environment
     export LD_LIBRARY_PATH=/usr/local/openmpi/lib:$LD_LIBRARY_PATH
     export PATH=/usr/local/openmpi/bin:$PATH
 %post
     export LD_LIBRARY_PATH=/usr/local/openmpi/lib:$LD_LIBRARY_PATH
     export PATH=/usr/local/openmpi/bin:$PATH
+%post
+    ldconfig /usr/local/cuda-10.0/lib64/stubs
+    # install Horovod, add other HOROVOD_* environment variables as necessary
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/nccl/build/ pip install --no-cache-dir horovod
+    
+%environment
+    export CUDA_DEVICE_ORDER=PCI_BUS_ID
 
+    # Add cupti to the path for profiling:
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64
+
+    source scl_source enable devtoolset-4
+    
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    export LC_ALL=C
+    export HOROVOD_GPU_ALLREDUCE=NCCL
+    export HOROVOD_GPU_ALLGATHER=MPI
+    export HOROVOD_GPU_BROADCAST=MPI
+    export HOROVOD_NCCL_HOME=/usr/local/cuda/nccl
+    export HOROVOD_NCCL_INCLUDE=/usr/local/cuda/nccl/include
+    export HOROVOD_NCCL_LIB=/usr/local/cuda/nccl/lib 
+    
+    export PYTHON_VERSION=3.6
+    export TENSORFLOW_VERSION=2.2.0
+    export PYTORCH_VERSION=1.5.1
+ 
+    export PATH=/usr/local/cuda/bin:$PATH
+    export LD_LIBRARY_PATH=/usr/local/cuda/nccl/lib:$LD_LIBRARY_PATH
+    export CUDA_HOME=/usr/local/cuda
 
