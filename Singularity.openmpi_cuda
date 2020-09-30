@@ -8,7 +8,7 @@
 # 
 
 BootStrap: docker
-From: nnvidia/cuda:10.0-cudnn7-runtime-centos7
+From: nvidia/cuda:10.0-cudnn7-runtime-centos7
 %post
     . /.singularity.d/env/10-docker*.sh
 
