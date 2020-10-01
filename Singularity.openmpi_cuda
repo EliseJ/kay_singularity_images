@@ -70,6 +70,21 @@ From: nvidia/cuda:9.0-devel-centos7
     rm -rf /var/tmp/openmpi-3.0.0 /var/tmp/openmpi-3.0.0.tar.bz2
     
 %post
+    yum install -y \
+        make \
+        wget \
+        which
+    rm -rf /var/cache/yum/*
+%post
+    cd /
+    yum install -y libibverbs*
+    mkdir -p /var/tmp && wget -q -nc --no-check-certificate -P /var/tmp https://github.com/NVIDIA/nccl/archive/v2.7.6-1.tar.gz
+    mkdir -p /var/tmp && tar -x -f /var/tmp/v2.7.6-1.tar.gz -C /var/tmp -z
+    cd /var/tmp/nccl-2.7.6-1
+    PREFIX=/usr/local/nccl make -j$(nproc) install
+    rm -rf /var/tmp/nccl-2.7.6-1 /var/tmp/v2.7.6-1.tar.gz
+    
+%post
     cd /
     CONDAVER=3
     VERSION=4.6.14
@@ -97,14 +112,6 @@ From: nvidia/cuda:9.0-devel-centos7
     python get-pip.py && \
     rm get-pip.py
     conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
-    pip install tensorboardX
-    yum install -y libibverbs*
-    # nccl2
-    git clone https://github.com/NVIDIA/nccl.git
-    cd nccl;
-    make -j src.build
-    make pkg.redhat.build
-    rpm -i build/pkg/rpm/x86_64/libnccl* 
     cd /
    
     pip --no-cache-dir --disable-pip-version-check install mpi4py
@@ -118,7 +125,7 @@ From: nvidia/cuda:9.0-devel-centos7
 %post
     ldconfig /usr/local/cuda-9.0/lib64/stubs
     # install Horovod, add other HOROVOD_* environment variables as necessary
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/nccl/build/ pip install --no-cache-dir horovod
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/build pip install --no-cache-dir horovod
     
 %environment
     export CUDA_DEVICE_ORDER=PCI_BUS_ID
@@ -133,15 +140,23 @@ From: nvidia/cuda:9.0-devel-centos7
     export HOROVOD_GPU_ALLREDUCE=NCCL
     export HOROVOD_GPU_ALLGATHER=MPI
     export HOROVOD_GPU_BROADCAST=MPI
-    export HOROVOD_NCCL_HOME=/usr/local/cuda/nccl
-    export HOROVOD_NCCL_INCLUDE=/usr/local/cuda/nccl/include
-    export HOROVOD_NCCL_LIB=/usr/local/cuda/nccl/lib 
+    export HOROVOD_NCCL_HOME=/usr/local/nccl/
+    export HOROVOD_NCCL_INCLUDE=/usr/local/nccl/include
+    export HOROVOD_NCCL_LIB=/usr/local/nccl/lib
     
     export PYTHON_VERSION=3.6
     export TENSORFLOW_VERSION=2.2.0
     export PYTORCH_VERSION=1.5.1
  
     export PATH=/usr/local/cuda/bin:$PATH
-    export LD_LIBRARY_PATH=/usr/local/cuda/nccl/lib:$LD_LIBRARY_PATH
+    
     export CUDA_HOME=/usr/local/cuda
+    export LIBRARY_PATH=/usr/local/nccl/lib:$LIBRARY_PATH
+    export PATH=/usr/local/nccl/bin:$PATH
+%post
+    export CPATH=/usr/local/nccl/include:$CPATH
+    export LD_LIBRARY_PATH=/usr/local/nccl/lib:$LD_LIBRARY_PATH
+    export LIBRARY_PATH=/usr/local/nccl/lib:$LIBRARY_PATH
+    export PATH=/usr/local/nccl/bin:$PATH
+
 
