@@ -114,7 +114,6 @@ From: nvidia/cuda:9.0-devel-centos7
     conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
     cd /
    
-    pip --no-cache-dir --disable-pip-version-check install mpi4py
     
 %environment
     export LD_LIBRARY_PATH=/usr/local/openmpi/lib:$LD_LIBRARY_PATH
@@ -122,6 +121,12 @@ From: nvidia/cuda:9.0-devel-centos7
 %post
     export LD_LIBRARY_PATH=/usr/local/openmpi/lib:$LD_LIBRARY_PATH
     export PATH=/usr/local/openmpi/bin:$PATH
+    export CPATH=/usr/local/nccl/include:$CPATH
+    export LD_LIBRARY_PATH=/usr/local/nccl/lib:$LD_LIBRARY_PATH
+    export LIBRARY_PATH=/usr/local/nccl/lib:$LIBRARY_PATH
+    export PATH=/usr/local/nccl/bin:$PATH
+    
+    pip --no-cache-dir --disable-pip-version-check install mpi4py
 %post
     ldconfig /usr/local/cuda-9.0/lib64/stubs
     # install Horovod, add other HOROVOD_* environment variables as necessary
@@ -153,10 +158,6 @@ From: nvidia/cuda:9.0-devel-centos7
     export CUDA_HOME=/usr/local/cuda
     export LIBRARY_PATH=/usr/local/nccl/lib:$LIBRARY_PATH
     export PATH=/usr/local/nccl/bin:$PATH
-%post
-    export CPATH=/usr/local/nccl/include:$CPATH
-    export LD_LIBRARY_PATH=/usr/local/nccl/lib:$LD_LIBRARY_PATH
-    export LIBRARY_PATH=/usr/local/nccl/lib:$LIBRARY_PATH
-    export PATH=/usr/local/nccl/bin:$PATH
+ 
 
 
