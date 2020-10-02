@@ -71,7 +71,7 @@ From: nvidia/cuda:9.0-devel-centos7
     
 %post
     yum install -y \
-        make \
+        make cmake \
         wget \
         which
     rm -rf /var/cache/yum/*
