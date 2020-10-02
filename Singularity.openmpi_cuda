@@ -128,6 +128,14 @@ From: nvidia/cuda:9.0-devel-centos7
     
     pip --no-cache-dir --disable-pip-version-check install mpi4py
 %post
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    export LC_ALL=C
+    export HOROVOD_GPU_ALLREDUCE=NCCL
+    export HOROVOD_GPU_ALLGATHER=MPI
+    export HOROVOD_GPU_BROADCAST=MPI
+    export HOROVOD_NCCL_HOME=/usr/local/nccl/
+    export HOROVOD_NCCL_INCLUDE=/usr/local/nccl/include
+    export HOROVOD_NCCL_LIB=/usr/local/nccl/lib
     ldconfig /usr/local/cuda-9.0/lib64/stubs
     # install Horovod, add other HOROVOD_* environment variables as necessary
     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/build pip install --no-cache-dir horovod
