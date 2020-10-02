@@ -82,7 +82,7 @@ From: nvidia/cuda:9.0-devel-centos7
     mkdir -p /var/tmp && tar -x -f /var/tmp/v2.7.6-1.tar.gz -C /var/tmp -z
     cd /var/tmp/nccl-2.7.6-1
     PREFIX=/usr/local/nccl make -j$(nproc) install
-    rm -rf /var/tmp/nccl-2.7.6-1 /var/tmp/v2.7.6-1.tar.gz
+    rm -rf  /var/tmp/v2.7.6-1.tar.gz
     
 %post
     cd /
@@ -133,12 +133,12 @@ From: nvidia/cuda:9.0-devel-centos7
     export HOROVOD_GPU_ALLREDUCE=NCCL
     export HOROVOD_GPU_ALLGATHER=MPI
     export HOROVOD_GPU_BROADCAST=MPI
-    export HOROVOD_NCCL_HOME=/usr/local/nccl/
+    export HOROVOD_NCCL_HOME=/usr/local/nccl/ 
     export HOROVOD_NCCL_INCLUDE=/usr/local/nccl/include
     export HOROVOD_NCCL_LIB=/usr/local/nccl/lib
     ldconfig /usr/local/cuda-9.0/lib64/stubs
     # install Horovod, add other HOROVOD_* environment variables as necessary
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/build pip install --no-cache-dir horovod
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/ pip install --no-cache-dir horovod
     
 %environment
     export CUDA_DEVICE_ORDER=PCI_BUS_ID
