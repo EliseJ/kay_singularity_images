@@ -111,7 +111,9 @@ From: nvidia/cuda:9.0-devel-centos7
     curl -O https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
     rm get-pip.py
-    conda install -y keras pandas h5py matplotlib scikit-learn scikit-image
+    pip install tensorflow-gpu==2.2
+    conda install pytorch==1.3 torchvision  -c pytorch
+    conda install -y  pandas h5py matplotlib scikit-learn scikit-image
     cd /
    
     
@@ -138,7 +140,8 @@ From: nvidia/cuda:9.0-devel-centos7
     export HOROVOD_NCCL_LIB=/usr/local/nccl/lib
     ldconfig /usr/local/cuda-9.0/lib64/stubs
     # install Horovod, add other HOROVOD_* environment variables as necessary
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/ pip install --no-cache-dir horovod
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/ HOROVOD_NCCL_LINK=SHARED pip install --no-cache-dir horovod
+    ldconfig
     
 %environment
     export CUDA_DEVICE_ORDER=PCI_BUS_ID
