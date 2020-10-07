@@ -112,7 +112,6 @@ From: nvidia/cuda:9.0-devel-centos7
     python get-pip.py && \
     rm get-pip.py
     pip install tensorflow-gpu==2.2
-    pip install  pytorch==1.3
     conda install -y  pandas h5py matplotlib scikit-learn scikit-image
     cd /
    
