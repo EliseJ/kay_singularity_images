@@ -8,7 +8,7 @@
 # 
 
 BootStrap: docker
-From: nvidia/cuda:9.0-devel-centos7
+From: nvidia/cuda:10.0-devel-centos7
 %post
     . /.singularity.d/env/10-docker*.sh
 
@@ -137,7 +137,7 @@ From: nvidia/cuda:9.0-devel-centos7
     #export HOROVOD_NCCL_HOME=/usr/local/nccl/ 
     #export HOROVOD_NCCL_INCLUDE=/usr/local/nccl/include
     #export HOROVOD_NCCL_LIB=/usr/local/nccl/lib
-    ldconfig /usr/local/cuda-9.0/lib64/stubs
+    ldconfig /usr/local/cuda-10.0/lib64/stubs
     # install Horovod, add other HOROVOD_* environment variables as necessary
     #HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_NCCL_HOME=/usr/local/nccl/ HOROVOD_NCCL_LINK=SHARED pip install --no-cache-dir horovod
     HOROVOD_GPU_ALLREDUCE=MPI HOROVOD_WITH_TENSORFLOW=1  pip install --no-cache-dir horovod
