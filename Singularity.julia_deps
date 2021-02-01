@@ -11,7 +11,7 @@ From: ubuntu:16.04
         openssh-client \
         wget \
         build-essential libatomic1 python gfortran perl wget m4 cmake pkg-config curl
-    apt-get install -y --no-install-recommends gcc gcc-c++ bzip2 which make libfabric git curl vim 
+    apt-get install -y --no-install-recommends gcc bzip2 which make libfabric git curl vim 
     apt-get install -y openssh-client openssh-server && mkdir -p /var/run/sshd 
     # Allow OpenSSH to talk to containers without asking for confirmation
     cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
