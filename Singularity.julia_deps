@@ -23,7 +23,7 @@ From: ubuntu:16.04
    # Install Open MPI
    mkdir /tmp/openmpi && \
    cd /tmp/openmpi && \
-   wget https://www.open-mpi.org/software/ompi/v4.0/downloads/openmpi-4.0.0.tar.gz && \
+   wget --no-check-certificate https://www.open-mpi.org/software/ompi/v4.0/downloads/openmpi-4.0.0.tar.gz && \
    tar zxf openmpi-4.0.0.tar.gz && \
    cd openmpi-4.0.0 && \
    ./configure --enable-orterun-prefix-by-default --prefix=/tmp/openmpi/build && \
