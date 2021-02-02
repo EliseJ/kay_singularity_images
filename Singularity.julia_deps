@@ -11,7 +11,7 @@ From: ubuntu:16.04
         openssh-client \
         wget \
         build-essential libatomic1 python gfortran perl wget m4 cmake pkg-config curl
-    apt-get install -y --no-install-recommends gcc bzip2 which make git vim 
+    apt-get install -y --no-install-recommends gcc bzip2 make git vim 
     
     apt-get install -y libibverbs*
     rm -rf /var/lib/apt/lists/*
